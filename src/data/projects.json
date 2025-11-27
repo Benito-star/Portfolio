@@ -1,0 +1,53 @@
+[
+  {
+    "id": "project-1",
+    "title": "Projet 1",
+    "description": "Brève description du projet.",
+    "year": "",
+    "tech": [],
+    "role": "",
+    "image": "placeholder.webp",
+    "detail": "description longue pour la page détail",
+    "gallery": [],
+    "url": ""
+  },
+
+  {
+    "id": "project-2",
+    "title": "Projet 2",
+    "description": "Brève description du projet.",
+    "year": "",
+    "tech": [],
+    "role": "",
+    "image": "placeholder.webp",
+    "detail": "description longue pour la page détail",
+    "gallery": [],
+    "url": ""
+  },
+
+  {
+    "id": "project-3",
+    "title": "Projet 3",
+    "description": "Brève description du projet.",
+    "year": "",
+    "tech": [],
+    "role": "",
+    "image": "placeholder.webp",
+    "detail": "description longue pour la page détail",
+    "gallery": [],
+    "url": ""
+  },
+
+  {
+    "id": "project-4",
+    "title": "Projet 4",
+    "description": "Brève description du projet.",
+    "year": "",
+    "tech": [],
+    "role": "",
+    "image": "placeholder.webp",
+    "detail": "description longue pour la page détail",
+    "gallery": [],
+    "url": ""
+  }
+]
