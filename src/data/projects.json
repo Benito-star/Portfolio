@@ -1,53 +1,41 @@
 [
   {
     "id": "project-1",
-    "title": "Projet 1",
-    "description": "Brève description du projet.",
-    "year": "",
-    "tech": [],
+    "title": "STRUB Aesthetic Technology",
+    "description": "Vente de matériel esthétique professionnel.",
+    "year": "2025",
+    "tech": ["UI/UX", "Web Design", "WordPress"],
     "role": "",
-    "image": "placeholder.webp",
+    "image": "Logo-Strub-SLOGAN-DARK.svg",
     "detail": "description longue pour la page détail",
     "gallery": [],
-    "url": ""
+    "url": "https://www.strubaesthetic.com"
   },
 
   {
     "id": "project-2",
-    "title": "Projet 2",
-    "description": "Brève description du projet.",
-    "year": "",
-    "tech": [],
+    "title": "E-commerce Animaux",
+    "description": "Vente d'accessoires pour animaux en ligne.",
+    "year": "2026",
+    "tech": ["WooCommerce", "WordPress"],
     "role": "",
-    "image": "placeholder.webp",
+    "image": "pattesjoy-logo-pure-svg-120-desktop.svg",
     "detail": "description longue pour la page détail",
     "gallery": [],
-    "url": ""
+    "url": "https://www.pattesjoy.com"
   },
 
   {
     "id": "project-3",
-    "title": "Projet 3",
-    "description": "Brève description du projet.",
+    "title": "Logos et Identité Visuelle",
+    "description": "Ideation board et création de logos pour diverses marques.",
     "year": "",
-    "tech": [],
+    "tech": ["Branding", "Figma"],
     "role": "",
-    "image": "placeholder.webp",
+    "image": "PixelBurst-Color.svg",
     "detail": "description longue pour la page détail",
     "gallery": [],
-    "url": ""
-  },
-
-  {
-    "id": "project-4",
-    "title": "Projet 4",
-    "description": "Brève description du projet.",
-    "year": "",
-    "tech": [],
-    "role": "",
-    "image": "placeholder.webp",
-    "detail": "description longue pour la page détail",
-    "gallery": [],
-    "url": ""
+    "url": "",
+    "status": "case"
   }
 ]
