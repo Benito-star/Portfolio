@@ -2,14 +2,59 @@
   {
     "id": "project-1",
     "title": "STRUB Aesthetic Technology",
+    "tagline": "Site B2B premium pour la vente de machines esthétiques professionnelles.",
     "description": "Vente de matériel esthétique professionnel.",
     "year": "2025",
-    "tech": ["UI/UX", "Web Design", "WordPress"],
-    "role": "",
+    "type": "Site vitrine B2B",
+    "status": "Live",
+    "tech": ["UI/UX", "Web Design", "WordPress", "SEO", "B2B"],
+    "role": "Webdesign UI/UX & intégration WordPress",
+    "detail": "Projet B2B orienté crédibilité et conversion : structuration de l’offre, mise en avant des preuves (certifications / garantie / support) et parcours clair vers la demande de devis.",
     "image": "Logo-Strub-SLOGAN-DARK.svg",
-    "detail": "description longue pour la page détail",
-    "gallery": [],
-    "url": "https://www.strubaesthetic.com"
+
+    "caseStudy": {
+      "problem": [
+        "Renforcer la crédibilité (positionnement premium B2B).",
+        "Structurer l’offre (machines, bénéfices, preuves, réassurance).",
+        "Optimiser la conversion vers “Demande de devis” et “Devenir distributeur”."
+      ],
+      "objectives": [
+        "Clarifier la proposition de valeur et guider l’utilisateur dès le hero.",
+        "Mettre en avant la réassurance : certifications, garantie, support, rentabilité.",
+        "Rendre la navigation fluide et le contenu scannable (sections + CTA récurrents).",
+        "Assurer un responsive propre et une cohérence de charte graphique."
+      ],
+      "myRole": [
+        "UI/UX : hiérarchie de l’information, structure des sections, parcours de conversion.",
+        "Webdesign : cohérence typographique, mise en page premium, détails UI.",
+        "Intégration WordPress : pages et blocs réutilisables, ajustements responsives.",
+        "SEO on-page (bases) : structure Hn, titres clairs, organisation du contenu."
+      ]
+    },
+
+    "galleryHighlights": [
+      "/images/Projects/STRUB/screencapture-HERO-strubaesthetic-machine-ilp-2026-01-24.webp",
+      "/images/Projects/STRUB/screencapture-NOS_SOLUTIONS-strubaesthetic-2026-01-24.webp",
+      "/images/Projects/STRUB/screencapture-TEMOIGNAGES_CERTIFS-strubaesthetic-2026-01-24.webp",
+      "/images/Projects/STRUB/screencapture-FAQ-strubaesthetic-2026-01-24.webp",
+      "/images/Projects/STRUB/screencapture-CTA-strubaesthetic-machine-hydrafacial-2026-01-24.webp",
+      "/images/Projects/STRUB/screencapture-DISTRIBUTEUR-strubaesthetic-2026-01-24.webp"
+    ],
+
+    "galleryFull": [
+      "/images/Projects/STRUB/screencapture-HOME-FULL-strubaesthetic-2026-01-24.webp",
+      "/images/Projects/STRUB/screencapture-ABOUT-FULL-strubaesthetic-2026-01-24.webp",
+      "/images/Projects/STRUB/screencapture-CONTACT-FULL-strubaesthetic-2026-01-26.webp"
+    ],
+
+    "url": "https://www.strubaesthetic.com",
+
+    "documents": [
+      {
+        "label": "Logo — Refonte & optimisations (PDF)",
+        "href": "/images/Projects/STRUB/Logo-Strub-Refonte-Optimisation.pdf"
+      }
+    ]
   },
 
   {

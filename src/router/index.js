@@ -56,6 +56,15 @@ const router = createRouter({
       component: ContactView,
     },
   ],
+
+  // ✅ Fix scroll (SPA) : au changement de page => retour en haut
+  // - savedPosition : restaure la position quand tu utilises "retour/avance" du navigateur
+  // - to.hash : permet de gérer les ancres (#section) si tu en utilises
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    return { top: 0, left: 0 }
+  },
 })
 
 export default router // On exporte l'instance du router pour l'utiliser dans main.js
