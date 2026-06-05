@@ -1,88 +1,154 @@
-// ContactView.vue — Page de contact du portfolio. // Contient ton formulaire ou ton CTA vers tes //
-// moyens de communication. // Page essentielle pour un recruteur ou client.
+// ContactView.vue — Page de contact du portfolio.
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, watch, nextTick, onMounted, computed } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
 import AppLayout from '../components/AppLayout.vue'
 
-// Remplace par ton endpoint Formspree (ex: https://formspree.io/f/abcdwxyz)
+// Remplace par ton endpoint Formspree réel.
+// Exemple : https://formspree.io/f/abcdwxyz
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/REPLACE_ME'
+
+// Mon Email et mon lien Linkedln
+const directEmail = 'benoit.durieux@hotmail.be'
+const linkedinUrl = 'https://www.linkedin.com/in/beno%C3%AEt-durieux-15424140b/'
 
 const route = useRoute()
 
-// ✅ Titre d’onglet (pro + indique Vue.js)
 onMounted(() => {
-  document.title = 'Contact — Benito Studio (Vue.js)'
+  document.title = 'Contact — Benito Studio | Webdesigner UI/UX junior'
+
+  const description =
+    'Contactez Benito Studio, webdesigner UI/UX junior avec double compétence design et intégration web, orienté WordPress, responsive design, SEO on-page et accessibilité de base.'
+
+  let metaDescription = document.querySelector('meta[name="description"]')
+
+  if (!metaDescription) {
+    metaDescription = document.createElement('meta')
+    metaDescription.setAttribute('name', 'description')
+    document.head.appendChild(metaDescription)
+  }
+
+  metaDescription.setAttribute('content', description)
 })
 
-// ✅ refs DOM pour scroll + focus
+// Refs DOM pour scroll + focus
 const formCardRef = ref(null)
 const nameInputRef = ref(null)
 const focusHandled = ref(false)
 
-// Champs du formulaire (refs)
+// Champs du formulaire
 const fullName = ref('')
 const email = ref('')
+const contactReason = ref('')
 const message = ref('')
+const website = ref('') // honeypot anti-spam invisible
 
-// État d’envoi (ref)
+// État d’envoi
 const status = ref('idle') // 'idle' | 'loading' | 'success' | 'error'
-
-// Message dismissible (refs)
 const alertVisible = ref(false)
 const alertType = ref('success') // 'success' | 'error'
 const alertText = ref('')
+
+const isSending = computed(() => status.value === 'loading')
+const isEndpointConfigured = computed(() => !FORMSPREE_ENDPOINT.includes('REPLACE_ME'))
 
 const closeAlert = () => {
   alertVisible.value = false
 }
 
-// ✅ Quand on arrive sur /contact?focus=1 => scroll + focus (une seule fois)
+const showAlert = (type, text) => {
+  status.value = type
+  alertType.value = type
+  alertText.value = text
+  alertVisible.value = true
+}
+
+// Quand on arrive sur /contact?focus=1 => scroll + focus
 watch(
   () => route.query.focus,
-  async (v) => {
-    if (v !== '1' || focusHandled.value) return
+  async (value) => {
+    if (value !== '1' || focusHandled.value) return
+
     focusHandled.value = true
 
     await nextTick()
 
-    // Scroll vers la carte du formulaire
-    formCardRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    formCardRef.value?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
 
-    // Focus sur le champ "Nom complet" (sans re-scroll)
     nameInputRef.value?.focus?.({ preventScroll: true })
   },
   { immediate: true },
 )
 
-const sendMessage = async () => {
-  const data = new FormData()
-  data.append('name', fullName.value)
-  data.append('email', email.value)
-  data.append('message', message.value)
-  data.append('_subject', 'Nouveau message — Portfolio Benito Studio')
+const isValidEmail = (value) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
 
-  const res = await fetch(FORMSPREE_ENDPOINT, {
+const validateForm = () => {
+  if (website.value.trim()) {
+    // Honeypot rempli = probable bot. On bloque discrètement.
+    return 'Votre message n’a pas pu être envoyé.'
+  }
+
+  if (!fullName.value.trim() || !email.value.trim() || !message.value.trim()) {
+    return 'Veuillez remplir votre nom, votre e-mail et votre message.'
+  }
+
+  if (!isValidEmail(email.value.trim())) {
+    return 'Veuillez entrer une adresse e-mail valide.'
+  }
+
+  if (message.value.trim().length < 15) {
+    return 'Ajoutez quelques détails à votre message pour que je puisse vous répondre correctement.'
+  }
+
+  return null
+}
+
+const sendMessage = async () => {
+  if (!isEndpointConfigured.value) {
+    throw new Error(
+      'Le formulaire n’est pas encore connecté à Formspree. Vous pouvez me contacter directement par e-mail via le bouton à droite.',
+    )
+  }
+
+  const data = new FormData()
+
+  data.append('name', fullName.value.trim())
+  data.append('email', email.value.trim())
+  data.append('_replyto', email.value.trim())
+  data.append('reason', contactReason.value || 'Non précisé')
+  data.append('message', message.value.trim())
+  data.append('_subject', `Nouveau message — Benito Studio (${contactReason.value || 'Contact'})`)
+
+  const response = await fetch(FORMSPREE_ENDPOINT, {
     method: 'POST',
     body: data,
-    headers: { Accept: 'application/json' },
+    headers: {
+      Accept: 'application/json',
+    },
   })
 
   let json = null
+
   try {
-    json = await res.json()
+    json = await response.json()
   } catch {
-    // ignore
+    // Réponse vide ou non JSON
   }
 
-  if (!res.ok) {
-    const msg =
+  if (!response.ok) {
+    const errorMessage =
       json?.errors
-        ?.map((e) => e.message)
+        ?.map((error) => error.message)
         .filter(Boolean)
         .join(' ') || 'Une erreur s’est produite. Vérifiez votre endpoint Formspree et réessayez.'
-    throw new Error(msg)
+
+    throw new Error(errorMessage)
   }
 
   return json
@@ -91,11 +157,10 @@ const sendMessage = async () => {
 const onSubmit = async () => {
   alertVisible.value = false
 
-  if (!fullName.value.trim() || !email.value.trim() || !message.value.trim()) {
-    status.value = 'error'
-    alertType.value = 'error'
-    alertText.value = 'Veuillez remplir tous les champs avant d’envoyer.'
-    alertVisible.value = true
+  const validationError = validateForm()
+
+  if (validationError) {
+    showAlert('error', validationError)
     return
   }
 
@@ -104,54 +169,122 @@ const onSubmit = async () => {
   try {
     await sendMessage()
 
-    status.value = 'success'
-    alertType.value = 'success'
-    alertText.value = 'Message envoyé. Je vous répondrai rapidement.'
-    alertVisible.value = true
+    showAlert('success', 'Message envoyé. Je vous répondrai rapidement.')
 
     fullName.value = ''
     email.value = ''
+    contactReason.value = ''
     message.value = ''
-  } catch (e) {
-    status.value = 'error'
-    alertType.value = 'error'
-    alertText.value = e?.message || 'Une erreur s’est produite. Réessayez dans un instant.'
-    alertVisible.value = true
+    website.value = ''
+  } catch (error) {
+    showAlert('error', error?.message || 'Une erreur s’est produite. Réessayez dans un instant.')
   }
 }
 </script>
 
 <template>
   <AppLayout>
-    <div class="container mx-auto px-4 py-12">
-      <!-- Layout premium : 1 col (mobile) / 2 cols (lg) -->
-      <div class="mx-auto max-w-5xl grid gap-10 lg:grid-cols-2 lg:gap-12 items-start">
-        <!-- COLONNE GAUCHE : titre + intro + form -->
-        <section>
-          <!-- TITRE (contraste corrigé) -->
-          <h1 class="text-4xl md:text-5xl font-bold text-[#1D2939] dark:!text-white/95 mb-6">
-            Me contacter
-          </h1>
+    <main class="container mx-auto px-4 py-12 md:py-16">
+      <section class="mx-auto max-w-6xl">
+        <!-- HERO CONTACT -->
+        <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+          <div>
+            <p
+              class="mb-4 inline-flex rounded-full border border-[#D4AF73]/40 bg-[#D4AF73]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]"
+            >
+              Contact
+            </p>
 
-          <!-- INTRO (contraste corrigé) -->
-          <p class="text-[#667085] dark:text-[#E2E4E8] text-sm leading-relaxed mb-10">
-            Une idée de projet, une collaboration ou simplement une question ? Je serai ravi d’en
-            discuter avec vous. Laissez-moi un message via ce formulaire et je vous répondrai
-            rapidement.
-          </p>
+            <h1
+              class="mb-5 max-w-3xl text-4xl font-bold leading-tight !text-[#1D2939] dark:!text-white md:text-5xl"
+            >
+              Parlons de votre projet ou d’une opportunité.
+            </h1>
 
-          <!-- ✅ ref sur la carte du formulaire -->
-          <div ref="formCardRef" class="bg-white border border-[#E5E7EB] shadow-sm rounded-3xl p-8">
-            <!-- ALERTE (success / error) -->
+            <p
+              class="max-w-2xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300 md:text-base"
+            >
+              Vous êtes recruteur, agence web, entreprise ou porteur de projet ? Je suis disponible
+              pour discuter d’une opportunité junior, d’une collaboration ou d’un besoin web orienté
+              UI/UX, WordPress, responsive design et intégration.
+            </p>
+
+            <ul class="mt-6 flex flex-wrap gap-2 text-xs">
+              <li
+                class="rounded-full border border-[#E5E7EB] bg-white px-3 py-1 !text-[#344054] dark:border-[#334155] dark:bg-[#101827] dark:!text-slate-200"
+              >
+                Webdesigner UI/UX junior
+              </li>
+              <li
+                class="rounded-full border border-[#E5E7EB] bg-white px-3 py-1 !text-[#344054] dark:border-[#334155] dark:bg-[#101827] dark:!text-slate-200"
+              >
+                Design + intégration
+              </li>
+              <li
+                class="rounded-full border border-[#E5E7EB] bg-white px-3 py-1 !text-[#344054] dark:border-[#334155] dark:bg-[#101827] dark:!text-slate-200"
+              >
+                WordPress / Vue / Tailwind
+              </li>
+            </ul>
+          </div>
+
+          <aside
+            class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+            aria-label="Disponibilité"
+          >
+            <p class="mb-2 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+              Disponibilité
+            </p>
+
+            <h2 class="text-lg font-semibold !text-[#1D2939] dark:!text-white">
+              Ouvert aux opportunités junior
+            </h2>
+
+            <p class="mt-2 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+              Belgique, Luxembourg, Suisse francophone, Espagne et opportunités remote francophones.
+            </p>
+
+            <RouterLink
+              to="/projects"
+              class="mt-4 inline-flex text-sm font-semibold !text-[#1D2939] underline underline-offset-4 transition-colors hover:!text-[#D4AF73] dark:!text-[#D4AF73] dark:hover:!text-[#EACA8A]"
+            >
+              Voir mes projets →
+            </RouterLink>
+          </aside>
+        </div>
+
+        <!-- CONTENU PRINCIPAL -->
+        <div class="mt-12 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
+          <!-- FORMULAIRE -->
+          <section
+            ref="formCardRef"
+            class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
+            aria-labelledby="contact-form-title"
+          >
+            <div class="mb-6">
+              <h2
+                id="contact-form-title"
+                class="text-2xl font-semibold !text-[#1D2939] dark:!text-white"
+              >
+                Envoyer un message
+              </h2>
+
+              <p class="mt-2 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+                Donnez-moi quelques informations simples. Je vous répondrai avec une réponse claire
+                et adaptée à votre besoin.
+              </p>
+            </div>
+
+            <!-- ALERTE -->
             <div
               v-if="alertVisible"
-              class="mb-6 rounded-2xl border px-4 py-3 flex items-start justify-between gap-4"
+              class="mb-6 flex items-start justify-between gap-4 rounded-2xl border px-4 py-3"
               :class="
                 alertType === 'success'
-                  ? 'border-[#D1FADF] bg-[#ECFDF3] text-[#027A48]'
-                  : 'border-[#FECDCA] bg-[#FEF3F2] text-[#B42318]'
+                  ? 'border-[#ABEFC6] bg-[#ECFDF3] !text-[#067647] dark:border-[#14532D] dark:bg-[#052E16] dark:!text-[#BBF7D0]'
+                  : 'border-[#FECDCA] bg-[#FEF3F2] !text-[#B42318] dark:border-[#7F1D1D] dark:bg-[#3F0D0D] dark:!text-[#FECACA]'
               "
-              role="status"
+              :role="alertType === 'error' ? 'alert' : 'status'"
               aria-live="polite"
             >
               <p class="text-sm leading-relaxed">
@@ -160,7 +293,7 @@ const onSubmit = async () => {
 
               <button
                 type="button"
-                class="shrink-0 rounded-lg px-2 py-1 hover:bg-black/5 transition-colors"
+                class="shrink-0 rounded-lg px-2 py-1 transition-colors hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] dark:hover:bg-white/10"
                 aria-label="Fermer le message"
                 @click="closeAlert"
               >
@@ -168,76 +301,247 @@ const onSubmit = async () => {
               </button>
             </div>
 
-            <!-- FORMULAIRE -->
-            <form @submit.prevent="onSubmit" class="space-y-6">
-              <!-- NOM -->
-              <div>
-                <label class="block text-sm font-medium text-[#1D2939] mb-1"> Nom complet </label>
+            <form class="space-y-6" @submit.prevent="onSubmit">
+              <!-- Honeypot anti-spam -->
+              <div class="hidden" aria-hidden="true">
+                <label for="website">Site web</label>
                 <input
-                  ref="nameInputRef"
-                  v-model="fullName"
+                  id="website"
+                  v-model="website"
                   type="text"
-                  placeholder="Votre nom"
-                  class="w-full px-4 py-3 bg-[#F3F4F6] border border-[#E5E7EB] rounded-xl text-sm text-[#1D2939] focus:outline-none focus:ring-2 focus:ring-[#1D2939] dark:focus:ring-[#D4AF73]"
+                  name="website"
+                  tabindex="-1"
+                  autocomplete="off"
                 />
               </div>
 
-              <!-- EMAIL -->
+              <div class="grid gap-5 md:grid-cols-2">
+                <!-- NOM -->
+                <div>
+                  <label
+                    for="fullName"
+                    class="mb-1.5 block text-sm font-medium !text-[#1D2939] dark:!text-white"
+                  >
+                    Nom complet
+                  </label>
+
+                  <input
+                    id="fullName"
+                    ref="nameInputRef"
+                    v-model="fullName"
+                    type="text"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="Votre nom"
+                    required
+                    class="w-full rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-3 text-sm !text-[#1D2939] outline-none transition-colors placeholder:!text-[#98A2B3] focus:border-[#D4AF73] focus:ring-2 focus:ring-[#D4AF73]/30 dark:border-[#334155] dark:bg-[#0B1020] dark:!text-white dark:placeholder:!text-slate-500"
+                  />
+                </div>
+
+                <!-- EMAIL -->
+                <div>
+                  <label
+                    for="email"
+                    class="mb-1.5 block text-sm font-medium !text-[#1D2939] dark:!text-white"
+                  >
+                    Adresse e-mail
+                  </label>
+
+                  <input
+                    id="email"
+                    v-model="email"
+                    type="email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="email@example.com"
+                    required
+                    class="w-full rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-3 text-sm !text-[#1D2939] outline-none transition-colors placeholder:!text-[#98A2B3] focus:border-[#D4AF73] focus:ring-2 focus:ring-[#D4AF73]/30 dark:border-[#334155] dark:bg-[#0B1020] dark:!text-white dark:placeholder:!text-slate-500"
+                  />
+                </div>
+              </div>
+
+              <!-- MOTIF -->
               <div>
-                <label class="block text-sm font-medium text-[#1D2939] mb-1">
-                  Adresse e-mail
+                <label
+                  for="contactReason"
+                  class="mb-1.5 block text-sm font-medium !text-[#1D2939] dark:!text-white"
+                >
+                  Motif du contact
                 </label>
-                <input
-                  v-model="email"
-                  type="email"
-                  placeholder="email@example.com"
-                  class="w-full px-4 py-3 bg-[#F3F4F6] border border-[#E5E7EB] rounded-xl text-sm text-[#1D2939] focus:outline-none focus:ring-2 focus:ring-[#1D2939] dark:focus:ring-[#D4AF73]"
-                />
+
+                <select
+                  id="contactReason"
+                  v-model="contactReason"
+                  name="reason"
+                  class="w-full rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-3 text-sm !text-[#1D2939] outline-none transition-colors focus:border-[#D4AF73] focus:ring-2 focus:ring-[#D4AF73]/30 dark:border-[#334155] dark:bg-[#0B1020] dark:!text-white"
+                >
+                  <option value="">Sélectionner une option</option>
+                  <option value="Opportunité junior / recrutement">
+                    Opportunité junior / recrutement
+                  </option>
+                  <option value="Projet web / site vitrine">Projet web / site vitrine</option>
+                  <option value="WordPress / CMS / e-commerce">WordPress / CMS / e-commerce</option>
+                  <option value="Collaboration agence / freelance">
+                    Collaboration agence / freelance
+                  </option>
+                  <option value="Autre demande">Autre demande</option>
+                </select>
               </div>
 
               <!-- MESSAGE -->
               <div>
-                <label class="block text-sm font-medium text-[#1D2939] mb-1"> Message </label>
+                <label
+                  for="message"
+                  class="mb-1.5 block text-sm font-medium !text-[#1D2939] dark:!text-white"
+                >
+                  Message
+                </label>
+
                 <textarea
+                  id="message"
                   v-model="message"
-                  rows="5"
-                  placeholder="Écrivez votre message ici..."
-                  class="w-full px-4 py-3 bg-[#F3F4F6] border border-[#E5E7EB] rounded-xl text-sm text-[#1D2939] resize-none focus:outline-none focus:ring-2 focus:ring-[#1D2939] dark:focus:ring-[#D4AF73]"
+                  name="message"
+                  rows="6"
+                  placeholder="Expliquez brièvement votre besoin, l’opportunité ou le contexte du projet..."
+                  required
+                  class="w-full resize-none rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-3 text-sm !text-[#1D2939] outline-none transition-colors placeholder:!text-[#98A2B3] focus:border-[#D4AF73] focus:ring-2 focus:ring-[#D4AF73]/30 dark:border-[#334155] dark:bg-[#0B1020] dark:!text-white dark:placeholder:!text-slate-500"
                 ></textarea>
               </div>
 
               <!-- CTA -->
-              <button
-                type="submit"
-                :disabled="status === 'loading'"
-                class="px-6 py-3 bg-[#1D2939] text-white text-sm font-medium rounded-full hover:bg-black transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                <span v-if="status !== 'loading'">Envoyer le message →</span>
-                <span v-else>Envoi en cours…</span>
-              </button>
+              <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <button
+                  type="submit"
+                  :disabled="isSending"
+                  class="inline-flex items-center justify-center rounded-full bg-[#1D2939] px-6 py-3 text-sm font-semibold !text-white transition-colors hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#D4AF73] dark:!text-[#0B1020] dark:hover:bg-[#c79f5f] dark:focus-visible:ring-offset-[#0B1020]"
+                >
+                  <span v-if="!isSending">Envoyer le message →</span>
+                  <span v-else>Envoi en cours…</span>
+                </button>
+
+                <p class="text-xs leading-relaxed !text-[#98A2B3] dark:!text-slate-500">
+                  Réponse généralement rapide selon disponibilité.
+                </p>
+              </div>
             </form>
-          </div>
-        </section>
+          </section>
 
-        <!-- COLONNE DROITE : infos directes -->
-        <aside class="lg:pt-20">
-          <div
-            class="rounded-3xl border border-white/10 bg-white/5 dark:bg-white/5 p-6 backdrop-blur"
-          >
-            <p class="text-sm text-[#667085] dark:text-[#E2E4E8]">Ou contactez-moi directement :</p>
-
-            <div class="mt-4 space-y-1">
-              <a
-                href="mailto:benito.studio@example.com"
-                class="font-medium text-[#1D2939] dark:text-white hover:text-[#D4AF73] dark:hover:text-[#D4AF73] transition-colors"
+          <!-- INFOS DIRECTES -->
+          <aside class="space-y-4">
+            <!-- Email direct -->
+            <section
+              class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+              aria-labelledby="direct-contact-title"
+            >
+              <h2
+                id="direct-contact-title"
+                class="text-lg font-semibold !text-[#1D2939] dark:!text-white"
               >
-                benito.studio@example.com
+                Contact direct
+              </h2>
+
+              <p class="mt-2 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+                Pour une demande rapide, vous pouvez aussi m’écrire directement par e-mail.
+              </p>
+
+              <a
+                :href="`mailto:${directEmail}`"
+                class="mt-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF73]/50 px-4 py-2 text-sm font-semibold !text-[#1D2939] transition-colors hover:bg-[#D4AF73] hover:!text-[#0B1020] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] dark:!text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 6h16v12H4V6z"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4 7l8 6 8-6"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                {{ directEmail }}
               </a>
-              <p class="text-xs text-[#98A2B3]">Réponse en moins de 24h</p>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </div>
+            </section>
+
+            <!-- LinkedIn -->
+            <section
+              class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+              aria-labelledby="linkedin-title"
+            >
+              <h2
+                id="linkedin-title"
+                class="text-lg font-semibold !text-[#1D2939] dark:!text-white"
+              >
+                Profil professionnel
+              </h2>
+
+              <p class="mt-2 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+                Retrouvez mon parcours, mes projets et mes informations professionnelles sur
+                LinkedIn.
+              </p>
+
+              <a
+                :href="linkedinUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-4 inline-flex items-center gap-2 text-sm font-semibold !text-[#1D2939] underline underline-offset-4 transition-colors hover:!text-[#D4AF73] dark:!text-[#D4AF73] dark:hover:!text-[#EACA8A]"
+              >
+                Voir mon LinkedIn →
+              </a>
+            </section>
+
+            <!-- À préparer -->
+            <section
+              class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+              aria-labelledby="prepare-title"
+            >
+              <h2 id="prepare-title" class="text-lg font-semibold !text-[#1D2939] dark:!text-white">
+                Informations utiles à envoyer
+              </h2>
+
+              <ul class="mt-4 space-y-3 text-sm !text-[#667085] dark:!text-slate-300">
+                <li class="flex gap-2">
+                  <span
+                    class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    >Type de besoin : recrutement, site web, WordPress, intégration ou UX/UI.</span
+                  >
+                </li>
+
+                <li class="flex gap-2">
+                  <span
+                    class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    >Contexte : entreprise, agence, projet personnel ou mission ponctuelle.</span
+                  >
+                </li>
+
+                <li class="flex gap-2">
+                  <span
+                    class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]"
+                    aria-hidden="true"
+                  ></span>
+                  <span>Délai, objectifs principaux et lien éventuel vers l’existant.</span>
+                </li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+      </section>
+    </main>
   </AppLayout>
 </template>

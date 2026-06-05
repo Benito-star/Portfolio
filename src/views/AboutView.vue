@@ -1,270 +1,454 @@
-// AboutView.vue — Page de présentation personnelle. // Décrit ton profil, ton parcours, ton style
-de design et tes compétences. // Présente le contexte professionnel aux employeurs ou examinateurs.
+// AboutView.vue — Page de présentation personnelle.
 
 <script setup>
+import { onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 import AppLayout from '../components/AppLayout.vue'
+
+const skillGroups = [
+  {
+    title: 'UI/UX & design web',
+    items: [
+      'Wireframes',
+      'Maquettes Figma',
+      'Hiérarchie visuelle',
+      'Design responsive',
+      'Design system de base',
+    ],
+  },
+  {
+    title: 'Intégration web',
+    items: ['HTML', 'CSS', 'JavaScript', 'Vue 3', 'Vue Router', 'Tailwind CSS'],
+  },
+  {
+    title: 'CMS & e-commerce',
+    items: ['WordPress', 'Elementor', 'WooCommerce', 'PrestaShop', 'Gestion de contenu'],
+  },
+  {
+    title: 'SEO & qualité',
+    items: [
+      'SEO on-page',
+      'Structure Hn',
+      'Responsive design',
+      'Accessibilité de base',
+      'Performance web',
+    ],
+  },
+]
+
+const methodSteps = [
+  {
+    title: 'Comprendre',
+    desc: 'Identifier les objectifs, la cible, les contraintes et le message principal.',
+  },
+  {
+    title: 'Structurer',
+    desc: 'Organiser l’arborescence, les contenus, les priorités et les parcours utilisateur.',
+  },
+  {
+    title: 'Designer',
+    desc: 'Créer une interface claire, cohérente, responsive et alignée avec l’identité visuelle.',
+  },
+  {
+    title: 'Intégrer',
+    desc: 'Transformer la maquette en interface propre, maintenable et adaptée aux écrans.',
+  },
+  {
+    title: 'Optimiser',
+    desc: 'Vérifier les détails UI, les bases SEO, la lisibilité, la performance et l’accessibilité.',
+  },
+]
+
+const journeyItems = [
+  {
+    period: '2023–2025',
+    title: 'Études Webdesign — IFOSUP Bruxelles',
+    desc: 'UI/UX, intégration web, WordPress, projets concrets et portfolio professionnel.',
+  },
+  {
+    period: '2022–2023',
+    title: 'Formation E-commerce — IFAPME',
+    desc: 'Logique business, vente en ligne, parcours client, contenu produit et bases e-commerce.',
+  },
+  {
+    period: 'Aujourd’hui',
+    title: 'Portfolio Benito Studio',
+    desc: 'Projet personnel construit avec Vue.js et Tailwind CSS pour présenter mes compétences et mes projets.',
+  },
+]
+
+const strengths = [
+  'Profil hybride design + intégration',
+  'Bonne compréhension WordPress / CMS',
+  'Sens du détail UI et de la lisibilité',
+  'Approche structurée et professionnelle',
+  'Capacité à documenter et expliquer les choix',
+  'Progression continue sur Vue.js, SEO et accessibilité',
+]
+
+onMounted(() => {
+  document.title = 'À propos — Benito Studio | Webdesigner UI/UX junior'
+
+  const description =
+    'À propos de Benito Studio : webdesigner UI/UX junior avec double compétence design et intégration web, orienté WordPress, responsive design, SEO on-page et accessibilité de base.'
+
+  let metaDescription = document.querySelector('meta[name="description"]')
+
+  if (!metaDescription) {
+    metaDescription = document.createElement('meta')
+    metaDescription.setAttribute('name', 'description')
+    document.head.appendChild(metaDescription)
+  }
+
+  metaDescription.setAttribute('content', description)
+})
 </script>
 
 <template>
   <AppLayout>
-    <div class="container mx-auto px-4 py-12">
-      <h1 class="text-3xl md:text-4xl font-bold dark:!text-white/95 mb-6">
-        À propos de Benito Studio
-      </h1>
-
-      <!-- HERO: texte + 2 cartes (Stack + Services) -->
-      <div class="grid md:grid-cols-2 gap-10">
-        <div class="space-y-4 text-sm text-[#667085] leading-relaxed">
-          <p>
-            Je suis
-            <span class="font-medium text-[#1D2939] dark:text-white/90">webdesigner </span>
-            <span class="font-medium text-[#1D2939] dark:text-white/90">UI/UX</span>. Je conçois des
-            interfaces élégantes, modernes et orientées conversion, avec une attention forte à la
-            clarté, aux détails et à la cohérence d’une charte graphique.
-          </p>
-
-          <!-- Hiérarchie visuelle: légèrement plus clair -->
-          <p class="text-white/75">
-            Ce site sert également de projet d’examen : Vue 3 + Router, données dynamiques, et
-            intégration fidèle d’une charte graphique.
-          </p>
-
-          <!-- Reformulation “métier” -->
-          <p>
-            J’y applique une approche orientée maintenabilité : composants réutilisables, routing
-            structuré (routes dynamiques) et Composition API (ref, onMounted) pour gérer l’état et
-            le cycle de vie.
-          </p>
-
-          <!-- Badges: libellés plus “impact” -->
-          <ul class="flex flex-wrap gap-2 text-xs">
-            <li class="px-3 py-1 rounded-full border border-white/10 text-white/80 bg-white/5">
-              Vue 3 (SFC)
-            </li>
-            <li class="px-3 py-1 rounded-full border border-white/10 text-white/80 bg-white/5">
-              Composition API (ref, onMounted)
-            </li>
-            <li class="px-3 py-1 rounded-full border border-white/10 text-white/80 bg-white/5">
-              Vue Router (routes dynamiques)
-            </li>
-            <li class="px-3 py-1 rounded-full border border-white/10 text-white/80 bg-white/5">
-              Composants réutilisables
-            </li>
-            <li class="px-3 py-1 rounded-full border border-white/10 text-white/80 bg-white/5">
-              Rendering (v-if / v-for)
-            </li>
-            <li class="px-3 py-1 rounded-full border border-white/10 text-white/80 bg-white/5">
-              Data binding (v-model)
-            </li>
-          </ul>
-
-          <p class="text-xs text-[#98A2B3] dark:text-white/60">
-            Basé en Belgique — projets à distance possibles.
-          </p>
-        </div>
-
-        <div class="space-y-6">
-          <!-- Carte 1: Stack & compétences (mise à jour) -->
-          <div
-            class="bg-white rounded-2xl border border-[#E5E7EB] p-6 space-y-3 text-sm text-[#667085]"
-          >
-            <h2 class="font-semibold text-[#1D2939] mb-2">Stack & compétences</h2>
-            <ul class="list-disc list-inside space-y-1">
-              <li>Vue 3 + Vue Router</li>
-              <li>HTML, CSS, Tailwind, JavaScript</li>
-              <li>UI/UX, design system & intégration pixel-perfect</li>
-              <li>WordPress / WooCommerce, Prestashop</li>
-              <li>SEO (bases + optimisation on-page)</li>
-            </ul>
-          </div>
-
-          <!-- Carte 2: Ce que je peux réaliser -->
-          <div
-            class="bg-white rounded-2xl border border-[#E5E7EB] p-6 space-y-3 text-sm text-[#667085]"
-          >
-            <h2 class="font-semibold text-[#1D2939] mb-2">Ce que je peux réaliser</h2>
-            <ul class="list-disc list-inside space-y-1">
-              <li>Site vitrine premium (1–10 pages)</li>
-              <li>Landing page orientée conversion</li>
-              <li>Intégration fidèle de maquettes Figma</li>
-              <li>Refonte UI + amélioration UX</li>
-              <li>WordPress : pages, thème, performance, SEO</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION: Ce que je fais (services) -->
-      <div class="mt-12">
-        <h2 class="text-xl md:text-2xl font-semibold text-[#1D2939] dark:!text-white/95 mb-6">
-          Ce que je fais
-        </h2>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">
-              UI/UX & maquettes
-            </h3>
-            <p class="text-sm text-[#667085] leading-relaxed">
-              Maquettage, hiérarchie visuelle, parcours utilisateur et composants réutilisables.
+    <main class="container mx-auto px-4 py-12 md:py-16">
+      <!-- HERO ABOUT -->
+      <section class="mx-auto max-w-6xl">
+        <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+          <!-- Texte principal -->
+          <div>
+            <p
+              class="mb-4 inline-flex rounded-full border border-[#D4AF73]/40 bg-[#D4AF73]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]"
+            >
+              À propos
             </p>
-          </div>
 
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">
-              Intégration front
-            </h3>
-            <p class="text-sm text-[#667085] leading-relaxed">
-              Interfaces propres, responsive et accessibles, avec une attention forte aux détails
-              UI.
+            <h1
+              class="mb-5 max-w-4xl text-4xl font-bold leading-tight !text-[#1D2939] dark:!text-white md:text-5xl"
+            >
+              Webdesigner UI/UX junior avec une double compétence
+              <span class="!text-[#D4AF73]">design + intégration web</span>.
+            </h1>
+
+            <p
+              class="max-w-2xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300 md:text-base"
+            >
+              Je conçois des interfaces claires, modernes et responsive, puis je les transforme en
+              expériences web structurées. Mon profil se situe entre le design d’interface,
+              l’intégration front-end et les environnements CMS comme WordPress.
             </p>
-          </div>
 
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">
-              WordPress & e-commerce
-            </h3>
-            <p class="text-sm text-[#667085] leading-relaxed">
-              Sites vitrines, WooCommerce, bases e-commerce et structure de contenu prête à évoluer.
-            </p>
-          </div>
-
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">
-              SEO & performance
-            </h3>
-            <p class="text-sm text-[#667085] leading-relaxed">
-              Optimisation on-page : structure, vitesse, clarté du contenu et bonnes pratiques.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION: Ma méthode (process) -->
-      <div class="mt-12">
-        <h2 class="text-xl md:text-2xl font-semibold text-[#1D2939] dark:!text-white/95 mb-6">
-          Ma méthode
-        </h2>
-
-        <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-          <ol
-            class="list-decimal list-inside pl-0 m-0 space-y-3 text-sm text-[#667085] marker:text-[#98A2B3]"
-          >
-            <li>
-              <span class="font-semibold text-[#1D2939]">Découverte :</span>
-              objectifs, cible, contraintes, inspirations.
-            </li>
-            <li>
-              <span class="font-semibold text-[#1D2939]">Structure :</span>
-              arborescence, wireframe, priorisation du message.
-            </li>
-            <li>
-              <span class="font-semibold text-[#1D2939]">Design :</span>
-              maquettes, composants, cohérence de la charte.
-            </li>
-            <li>
-              <span class="font-semibold text-[#1D2939]">Intégration :</span>
-              responsive, détails UI, tests navigateurs.
-            </li>
-            <li>
-              <span class="font-semibold text-[#1D2939]">Livraison :</span>
-              check final, ajustements et conseils pour la suite.
-            </li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- SECTION: Parcours (timeline courte) -->
-      <div class="mt-12">
-        <h2 class="text-xl md:text-2xl font-semibold text-[#1D2939] dark:!text-white/95 mb-6">
-          Parcours
-        </h2>
-
-        <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-          <ul
-            class="list-disc list-inside pl-0 m-0 space-y-3 text-sm text-[#667085] marker:text-[#98A2B3]"
-          >
-            <li>
-              <span class="font-semibold text-[#1D2939]">2023–2025 :</span>
-              Formation Webdesign (IFOSUP) : UI/UX, intégration, projets concrets.
-            </li>
-            <li>
-              <span class="font-semibold text-[#1D2939]">2022–2023 :</span>
-              Formation E-commerce (IFAPME) : logique business & vente en ligne.
-            </li>
-            <li>
-              <span class="font-semibold text-[#1D2939]">Expériences :</span>
-              support technique, mises à jour WordPress et mise en page : rigueur, autonomie,
-              fiabilité.
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- SECTION: Outils -->
-      <div class="mt-12">
-        <h2 class="text-xl md:text-2xl font-semibold text-[#1D2939] dark:!text-white/95 mb-6">
-          Outils
-        </h2>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">Design</h3>
-            <p class="text-sm text-[#667085] leading-relaxed">Figma, Photoshop, Illustrator</p>
-          </div>
-
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">Dev</h3>
-            <p class="text-sm text-[#667085] leading-relaxed">
-              VS Code / Visual Studio, Git (si besoin)
-            </p>
-          </div>
-
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">CMS</h3>
-            <p class="text-sm text-[#667085] leading-relaxed">WordPress, WooCommerce</p>
-          </div>
-
-          <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6">
-            <h3 class="font-semibold text-[#1D2939] dark:text-white/90 mb-2 text-sm">E-commerce</h3>
-            <p class="text-sm text-[#667085] leading-relaxed">Prestashop</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- MINI-BLOC: crédibilité + CTA (optionnel, mais utile) -->
-      <div class="mt-12">
-        <div class="bg-white rounded-2xl border border-[#E5E7EB] p-6 md:p-8">
-          <div class="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 class="text-lg md:text-xl font-semibold text-[#1D2939] dark:text-white/90 mb-2">
-                Ce que tu gagnes en travaillant avec moi
-              </h2>
-              <ul class="list-disc list-inside text-sm text-[#667085] space-y-1">
-                <li>Une interface claire (message + hiérarchie)</li>
-                <li>Un rendu premium (détails, cohérence, finition)</li>
-                <li>Une base prête à évoluer (structure, composants, maintenabilité)</li>
-              </ul>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
+            <div class="mt-7 flex flex-wrap gap-3">
               <RouterLink
                 to="/projects"
-                class="inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-medium bg-[#101828] text-white hover:opacity-90 transition"
+                class="inline-flex items-center justify-center rounded-full bg-[#1D2939] px-6 py-3 text-sm font-semibold !text-white transition-colors hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] focus-visible:ring-offset-2 dark:bg-[#D4AF73] dark:!text-[#0B1020] dark:hover:bg-[#c79f5f] dark:focus-visible:ring-offset-[#0B1020]"
               >
                 Voir mes projets
               </RouterLink>
 
               <RouterLink
                 to="/contact"
-                class="inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-medium border border-[#E5E7EB] text-[#1D2939] hover:bg-[#F9FAFB] transition"
+                class="inline-flex items-center justify-center rounded-full border border-[#D4AF73]/50 px-6 py-3 text-sm font-semibold !text-[#1D2939] transition-colors hover:bg-[#D4AF73] hover:!text-[#0B1020] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] focus-visible:ring-offset-2 dark:!text-white dark:focus-visible:ring-offset-[#0B1020]"
+              >
+                Me contacter
+              </RouterLink>
+            </div>
+          </div>
+
+          <!-- Carte profil -->
+          <aside
+            class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+            aria-label="Résumé du profil"
+          >
+            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+              Profil
+            </p>
+
+            <h2 class="text-xl font-semibold !text-[#1D2939] dark:!text-white">Benito Studio</h2>
+
+            <p class="mt-3 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+              Portfolio personnel créé pour présenter mes projets, ma méthode et ma capacité à
+              relier design, intégration, WordPress, SEO on-page et responsive design.
+            </p>
+
+            <div class="mt-5 grid gap-3 text-sm">
+              <div
+                class="rounded-2xl border border-[#E5E7EB] bg-[#F9FAFB] p-4 dark:border-[#334155] dark:bg-[#0B1020]"
+              >
+                <p class="text-xs uppercase tracking-[0.14em] !text-[#98A2B3] dark:!text-slate-500">
+                  Localisation
+                </p>
+                <p class="mt-1 font-semibold !text-[#1D2939] dark:!text-white">
+                  Belgique — ouvert aux opportunités hybrides et remote
+                </p>
+              </div>
+
+              <div
+                class="rounded-2xl border border-[#E5E7EB] bg-[#F9FAFB] p-4 dark:border-[#334155] dark:bg-[#0B1020]"
+              >
+                <p class="text-xs uppercase tracking-[0.14em] !text-[#98A2B3] dark:!text-slate-500">
+                  Cibles
+                </p>
+                <p class="mt-1 font-semibold !text-[#1D2939] dark:!text-white">
+                  Agences web, studios digitaux, e-commerce, équipes marketing
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- POSITIONNEMENT -->
+      <section class="mx-auto mt-16 max-w-6xl">
+        <div
+          class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
+        >
+          <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <div>
+              <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+                Positionnement
+              </p>
+
+              <h2 class="text-2xl font-semibold !text-[#1D2939] dark:!text-white md:text-3xl">
+                Un profil junior orienté production web concrète.
+              </h2>
+            </div>
+
+            <div class="space-y-4 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+              <p>
+                Je ne me positionne pas comme un designer purement théorique. Mon intérêt est de
+                concevoir des interfaces utiles, lisibles et élégantes, tout en comprenant les
+                contraintes d’intégration, de CMS, de responsive design, de SEO on-page et de
+                maintenance.
+              </p>
+
+              <p>
+                Cette double compétence me permet de mieux dialoguer avec les développeurs, les
+                clients, les équipes marketing et les recruteurs qui cherchent un junior capable de
+                produire, structurer et améliorer une présence web.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPÉTENCES -->
+      <section class="mx-auto mt-16 max-w-6xl">
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold !text-[#1D2939] dark:!text-white md:text-3xl">
+            Compétences principales
+          </h2>
+
+          <p class="mt-3 max-w-3xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+            Une base polyvalente pour travailler sur des sites vitrines, portfolios, pages de vente,
+            interfaces CMS et projets web orientés clarté, conversion et qualité d’exécution.
+          </p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <article
+            v-for="group in skillGroups"
+            :key="group.title"
+            class="rounded-2xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+          >
+            <h3 class="mb-4 text-base font-semibold !text-[#1D2939] dark:!text-white">
+              {{ group.title }}
+            </h3>
+
+            <ul class="space-y-2 text-sm !text-[#667085] dark:!text-slate-300">
+              <li v-for="item in group.items" :key="item" class="flex gap-2">
+                <span
+                  class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF73]"
+                  aria-hidden="true"
+                ></span>
+                <span>{{ item }}</span>
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- CE QUE J’APPORTE -->
+      <section class="mx-auto mt-16 max-w-6xl">
+        <div class="grid gap-8 lg:grid-cols-2">
+          <div
+            class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
+          >
+            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+              Valeur ajoutée
+            </p>
+
+            <h2 class="mb-5 text-2xl font-semibold !text-[#1D2939] dark:!text-white">
+              Ce que je peux apporter
+            </h2>
+
+            <ul class="space-y-3 text-sm !text-[#667085] dark:!text-slate-300">
+              <li v-for="strength in strengths" :key="strength" class="flex gap-3">
+                <span
+                  class="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4AF73]/15 text-xs font-bold !text-[#D4AF73]"
+                  aria-hidden="true"
+                >
+                  ✓
+                </span>
+                <span>{{ strength }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
+          >
+            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+              Projets types
+            </p>
+
+            <h2 class="mb-5 text-2xl font-semibold !text-[#1D2939] dark:!text-white">
+              Ce que je peux réaliser
+            </h2>
+
+            <div class="grid gap-3 text-sm">
+              <div class="rounded-2xl bg-[#F9FAFB] p-4 dark:bg-[#0B1020]">
+                <h3 class="font-semibold !text-[#1D2939] dark:!text-white">
+                  Site vitrine ou landing page
+                </h3>
+                <p class="mt-1 !text-[#667085] dark:!text-slate-300">
+                  Structure claire, design responsive, message lisible et CTA visibles.
+                </p>
+              </div>
+
+              <div class="rounded-2xl bg-[#F9FAFB] p-4 dark:bg-[#0B1020]">
+                <h3 class="font-semibold !text-[#1D2939] dark:!text-white">
+                  Refonte UI / amélioration UX
+                </h3>
+                <p class="mt-1 !text-[#667085] dark:!text-slate-300">
+                  Hiérarchie visuelle, cohérence graphique, lisibilité mobile et parcours
+                  utilisateur.
+                </p>
+              </div>
+
+              <div class="rounded-2xl bg-[#F9FAFB] p-4 dark:bg-[#0B1020]">
+                <h3 class="font-semibold !text-[#1D2939] dark:!text-white">WordPress / CMS</h3>
+                <p class="mt-1 !text-[#667085] dark:!text-slate-300">
+                  Pages structurées, contenus organisés, SEO on-page et base maintenable.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MÉTHODE -->
+      <section class="mx-auto mt-16 max-w-6xl">
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold !text-[#1D2939] dark:!text-white md:text-3xl">
+            Ma méthode
+          </h2>
+
+          <p class="mt-3 max-w-3xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+            Une approche simple, lisible et réaliste pour avancer étape par étape, sans perdre de
+            vue l’objectif utilisateur, la qualité d’exécution et la maintenabilité.
+          </p>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-5">
+          <article
+            v-for="(step, index) in methodSteps"
+            :key="step.title"
+            class="rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+          >
+            <span
+              class="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#D4AF73]/15 text-sm font-bold !text-[#D4AF73]"
+            >
+              {{ index + 1 }}
+            </span>
+
+            <h3 class="mb-2 text-sm font-semibold !text-[#1D2939] dark:!text-white">
+              {{ step.title }}
+            </h3>
+
+            <p class="text-xs leading-relaxed !text-[#667085] dark:!text-slate-300">
+              {{ step.desc }}
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- PARCOURS -->
+      <section class="mx-auto mt-16 max-w-6xl">
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold !text-[#1D2939] dark:!text-white md:text-3xl">
+            Parcours
+          </h2>
+
+          <p class="mt-3 max-w-3xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+            Un parcours construit autour du webdesign, de l’e-commerce, de WordPress et de la
+            production d’interfaces concrètes.
+          </p>
+        </div>
+
+        <div
+          class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
+        >
+          <ol class="space-y-6">
+            <li
+              v-for="item in journeyItems"
+              :key="item.title"
+              class="grid gap-3 border-b border-[#E5E7EB] pb-6 last:border-b-0 last:pb-0 dark:border-[#334155] md:grid-cols-[140px_1fr]"
+            >
+              <p class="text-sm font-semibold !text-[#D4AF73]">
+                {{ item.period }}
+              </p>
+
+              <div>
+                <h3 class="text-base font-semibold !text-[#1D2939] dark:!text-white">
+                  {{ item.title }}
+                </h3>
+
+                <p class="mt-1 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+                  {{ item.desc }}
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- CTA FINAL -->
+      <section class="mx-auto mt-16 max-w-6xl">
+        <div
+          class="rounded-3xl border border-[#E5E7EB] bg-white p-8 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-10"
+        >
+          <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+                Suite logique
+              </p>
+
+              <h2 class="text-2xl font-semibold !text-[#1D2939] dark:!text-white">
+                Voir comment ce profil se traduit en projets concrets.
+              </h2>
+
+              <p
+                class="mt-3 max-w-2xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300"
+              >
+                Le plus important reste la preuve par les projets : structure, décisions UI/UX,
+                intégration, responsive design et apprentissages.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 md:justify-end">
+              <RouterLink
+                to="/projects"
+                class="inline-flex items-center justify-center rounded-full bg-[#1D2939] px-6 py-3 text-sm font-semibold !text-white transition-colors hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] focus-visible:ring-offset-2 dark:bg-[#D4AF73] dark:!text-[#0B1020] dark:hover:bg-[#c79f5f] dark:focus-visible:ring-offset-[#0B1020]"
+              >
+                Explorer les projets
+              </RouterLink>
+
+              <RouterLink
+                to="/contact"
+                class="inline-flex items-center justify-center rounded-full border border-[#D4AF73]/50 px-6 py-3 text-sm font-semibold !text-[#1D2939] transition-colors hover:bg-[#D4AF73] hover:!text-[#0B1020] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] focus-visible:ring-offset-2 dark:!text-white dark:focus-visible:ring-offset-[#0B1020]"
               >
                 Me contacter
               </RouterLink>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   </AppLayout>
 </template>

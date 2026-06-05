@@ -4,13 +4,13 @@
     "title": "STRUB Aesthetic Technology",
     "tagline": "Site B2B premium pour la vente de machines esthétiques professionnelles.",
     "description": "Vente de matériel esthétique professionnel.",
-    "year": "2025",
+    "year": "2026",
     "type": "Site vitrine B2B",
     "status": "Live",
     "tech": ["UI/UX", "Web Design", "WordPress", "SEO", "B2B"],
     "role": "Webdesign UI/UX & intégration WordPress",
     "detail": "Projet B2B orienté crédibilité et conversion : structuration de l’offre, mise en avant des preuves (certifications / garantie / support) et parcours clair vers la demande de devis.",
-    "image": "Logo-Strub-SLOGAN-DARK.svg",
+    "image": "Projects/STRUB/strub-aesthetic-homepage-hero-section.webp",
 
     "caseStudy": {
       "problem": [
@@ -33,18 +33,24 @@
     },
 
     "galleryHighlights": [
-      "/images/Projects/STRUB/screencapture-HERO-strubaesthetic-machine-ilp-2026-01-24.webp",
-      "/images/Projects/STRUB/screencapture-NOS_SOLUTIONS-strubaesthetic-2026-01-24.webp",
-      "/images/Projects/STRUB/screencapture-TEMOIGNAGES_CERTIFS-strubaesthetic-2026-01-24.webp",
-      "/images/Projects/STRUB/screencapture-FAQ-strubaesthetic-2026-01-24.webp",
-      "/images/Projects/STRUB/screencapture-CTA-strubaesthetic-machine-hydrafacial-2026-01-24.webp",
-      "/images/Projects/STRUB/screencapture-DISTRIBUTEUR-strubaesthetic-2026-01-24.webp"
+      "/images/Projects/STRUB/sections/strub-header-navigation-b2b.webp",
+      "/images/Projects/STRUB/sections/strub-section-hero.webp",
+      "/images/Projects/STRUB/sections/strub-section-solutions.webp",
+      "/images/Projects/STRUB/sections/strub-section-solution-gamme-electrostimulation.webp",
+      "/images/Projects/STRUB/sections/strub-section-reassurance-certifications.webp",
+      "/images/Projects/STRUB/sections/strub-section-cas-usage-accompagnement.webp",
+      "/images/Projects/STRUB/sections/strub-section-cta.webp",
+      "/images/Projects/STRUB/sections/strub-section-faq.webp",
+      "/images/Projects/STRUB/sections/strub-footer-navigation-conformite.webp"
     ],
 
     "galleryFull": [
-      "/images/Projects/STRUB/screencapture-HOME-FULL-strubaesthetic-2026-01-24.webp",
-      "/images/Projects/STRUB/screencapture-ABOUT-FULL-strubaesthetic-2026-01-24.webp",
-      "/images/Projects/STRUB/screencapture-CONTACT-FULL-strubaesthetic-2026-01-26.webp"
+      "/images/Projects/STRUB/full-pages/strub-aesthetic-page-accueil-fullpage-desktop.webp",
+      "/images/Projects/STRUB/full-pages/strub-aesthetic-page-a-propos-fullpage-desktop.webp",
+      "/images/Projects/STRUB/full-pages/strub-aesthetic-page-contact-fullpage-desktop.webp",
+      "/images/Projects/STRUB/full-pages/strub-aesthetic-page-devenir-distributeur-fullpage-desktop.webp",
+      "/images/Projects/STRUB/full-pages/strub-aesthetic-page-support-sav-fullpage-desktop.webp",
+      "/images/Projects/STRUB/full-pages/strub-aesthetic-page-machine-fullpage-desktop.webp"
     ],
 
     "url": "https://www.strubaesthetic.com",
@@ -53,34 +59,151 @@
       {
         "label": "Logo — Refonte & optimisations (PDF)",
         "href": "/images/Projects/STRUB/Logo-Strub-Refonte-Optimisation.pdf"
+      },
+      {
+        "label": "Rapport complet — Cahier des charges | Refonte Logo | Contrat | Devis fictif | Manuel client (PDF)",
+        "href": "/images/Projects/STRUB/TFE Webdesigner-Portfolio-Strub-Benoit-Durieux-2026.pdf"
       }
     ]
   },
 
   {
     "id": "project-2",
-    "title": "E-commerce Animaux",
-    "description": "Vente d'accessoires pour animaux en ligne.",
+    "title": "Guide SEO WordPress / Elementor",
+    "tagline": "Guide pédagogique pour optimiser un site WordPress créé avec Elementor.",
+    "description": "Guide pratique SEO conçu pour aider les créateurs de sites WordPress à structurer leurs pages, optimiser leurs contenus et vérifier les bases avant mise en ligne.",
     "year": "2026",
-    "tech": ["WooCommerce", "WordPress"],
-    "role": "",
-    "image": "pattesjoy-logo-pure-svg-120-desktop.svg",
-    "detail": "description longue pour la page détail",
-    "gallery": [],
-    "url": "https://www.pattesjoy.com"
+    "type": "Guide pédagogique SEO",
+    "status": "case",
+    "tech": ["WordPress", "Elementor", "Yoast SEO", "SEO on-page", "Responsive"],
+    "role": "Webdesign, structuration de contenu, rédaction pédagogique, intégration Elementor et optimisation SEO on-page.",
+    "image": "Projects/SEO/sections/seo-guide-home-section-card.webp",
+    "detail": "Projet démonstratif orienté pédagogie, clarté éditoriale et bonnes pratiques SEO. L’objectif était de transformer des notions techniques en parcours lisible, progressif et actionnable pour des utilisateurs non experts.",
+
+    "caseStudy": {
+      "problem": [
+        "Rendre le SEO compréhensible pour des porteurs de projets non techniques.",
+        "Structurer un guide clair autour de chapitres progressifs.",
+        "Éviter une présentation trop théorique en privilégiant des exemples, checklists et erreurs fréquentes.",
+        "Créer une interface éditoriale lisible, cohérente et facile à parcourir."
+      ],
+      "objectifs": [
+        "Construire un parcours pédagogique depuis les bases du SEO jusqu’à la checklist de mise en ligne.",
+        "Présenter les notions clés : structure Hn, Yoast SEO, métadonnées, images, performance et responsive.",
+        "Aider l’utilisateur à vérifier concrètement son site avant publication.",
+        "Créer une base de contenu claire, maintenable et adaptée à WordPress / Elementor."
+      ],
+      "myRole": [
+        "Structuration UX du guide : accueil, chapitres, ressources, checklist et FAQ.",
+        "Rédaction et vulgarisation des contenus SEO.",
+        "Intégration WordPress avec Elementor.",
+        "Mise en page responsive et hiérarchisation visuelle des informations.",
+        "Préparation des bonnes pratiques SEO on-page : titres, métadonnées, images, navigation et contenu utile."
+      ],
+      "results": [
+        "Un guide clair et progressif pour comprendre les bases du référencement naturel.",
+        "Une navigation structurée par chapitres, facilitant la consultation.",
+        "Des contenus pratiques : checklist, erreurs fréquentes, ressources et glossaire.",
+        "Une preuve concrète de mes compétences WordPress, Elementor, SEO on-page et content design."
+      ],
+      "learnings": [
+        "Mieux structurer un contenu long pour le rendre lisible et actionnable.",
+        "Adapter le ton pédagogique à des utilisateurs non techniques.",
+        "Relier design éditorial, UX et SEO on-page.",
+        "Penser un site WordPress comme un support utile, pas seulement comme une vitrine."
+      ]
+    },
+
+    "galleryHighlights": [
+      "/images/Projects/SEO/sections/seo-guide-home-section.webp",
+      "/images/Projects/SEO/sections/seo-section-parcours-chapitres.webp",
+      "/images/Projects/SEO/sections/seo-section-bases-seo-piliers.webp",
+      "/images/Projects/SEO/sections/seo-section-elementor-structure-hn.webp",
+      "/images/Projects/SEO/sections/seo-section-yoast-metadonnees.webp",
+      "/images/Projects/SEO/sections/seo-section-checklist-livraison.webp"
+    ],
+
+    "galleryFull": [
+      "/images/Projects/SEO/full-pages/seo-guide-home-full.webp",
+      "/images/Projects/SEO/full-pages/seo-guide-bases-seo-full.webp",
+      "/images/Projects/SEO/full-pages/seo-guide-elementor-full.webp",
+      "/images/Projects/SEO/full-pages/seo-guide-yoast-full.webp",
+      "/images/Projects/SEO/full-pages/seo-guide-performance-full.webp",
+      "/images/Projects/SEO/full-pages/seo-guide-checklist-full.webp",
+      "/images/Projects/SEO/full-pages/seo-guide-erreurs-frequentes-full.webp",
+      "/images/Projects/SEO/full-pages/seo-guide-ressources-full.webp"
+    ],
+
+    "url": "",
+    "documents": []
   },
 
   {
     "id": "project-3",
-    "title": "Logos et Identité Visuelle",
-    "description": "Ideation board et création de logos pour diverses marques.",
-    "year": "",
-    "tech": ["Branding", "Figma"],
-    "role": "",
+    "title": "Identité visuelle — PixelBurst",
+    "tagline": "Création d’un logo personnel et d’un insigne compact pensés pour le digital.",
+    "description": "Conception d’un logo modulaire, d’un insigne compact et de variantes visuelles pour une identité digitale cohérente.",
+    "year": "2025",
+    "type": "Identité visuelle",
+    "status": "case",
+    "tech": ["Branding", "Illustrator", "Logo design", "Identité visuelle"],
+    "role": "Designer graphique junior",
     "image": "PixelBurst-Color.svg",
-    "detail": "description longue pour la page détail",
-    "gallery": [],
+    "detail": "Projet d’identité visuelle centré sur la création d’un logo personnel et d’un insigne compact. Le travail met en avant la recherche visuelle, l’idéation, la sélection d’une piste graphique, les variantes et la lisibilité sur différents supports digitaux.",
+
+    "caseStudy": {
+      "problem": [
+        "Créer une identité visuelle reconnaissable, moderne et exploitable sur plusieurs supports digitaux.",
+        "Concevoir un logo lisible en grand format comme en très petite taille.",
+        "Éviter un symbole uniquement décoratif, difficile à utiliser en favicon, carte projet ou interface."
+      ],
+      "objectifs": [
+        "Explorer plusieurs directions graphiques avant de sélectionner une piste cohérente.",
+        "Construire un logo modulaire basé sur une logique de pixels et d’expansion.",
+        "Prévoir des variantes couleur, noir, blanc et gris pour différents contextes d’usage.",
+        "Documenter le raisonnement graphique pour rendre le projet compréhensible par un recruteur."
+      ],
+      "myRole": [
+        "Veille visuelle, moodboard et analyse des tendances graphiques.",
+        "Création de pistes d’idéation et sélection de la direction finale.",
+        "Conception du logo, de l’insigne compact et des variantes.",
+        "Préparation des documents de présentation du processus."
+      ],
+      "technicalChoices": [
+        "Structure en burst concentrique pour symboliser l’expansion d’une idée digitale.",
+        "Utilisation de formes géométriques simples pour conserver une bonne lisibilité.",
+        "Dégradé bleu/cyan pour évoquer la technologie, la créativité et le web.",
+        "Déclinaisons monochromes prévues pour les fonds clairs, sombres et les usages compacts."
+      ],
+      "results": [
+        "Une identité visuelle plus cohérente et directement exploitable dans le portfolio.",
+        "Un logo utilisable en version couleur, noir, blanc, gris et format compact.",
+        "Un processus documenté qui montre la démarche de recherche, d’itération et de sélection.",
+        "Une preuve concrète de compétences en branding, lisibilité visuelle et design system léger."
+      ],
+      "learnings": [
+        "Documenter les choix graphiques rend un projet de logo beaucoup plus crédible.",
+        "Un bon logo doit être pensé pour plusieurs tailles, pas seulement pour un grand affichage.",
+        "Les variantes sont essentielles pour garantir une identité utilisable sur différents supports.",
+        "La simplicité visuelle demande autant de méthode que la création d’un logo plus complexe."
+      ]
+    },
+
+    "galleryHighlights": ["/images/PixelBurst-Color.svg", "/images/PixelBurst-BW.svg"],
+
+    "galleryFull": [],
+
     "url": "",
-    "status": "case"
+
+    "documents": [
+      {
+        "label": "Dossier logo & insigne PixelBurst (PDF)",
+        "href": "/documents/projects/pixelburst/pixelburst-logo-insigne-identite-visuelle.pdf"
+      },
+      {
+        "label": "Planche d’idéation PixelBurst (PDF)",
+        "href": "/documents/projects/pixelburst/pixelburst-planche-ideation-logo.pdf"
+      }
+    ]
   }
 ]

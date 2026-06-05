@@ -11,75 +11,89 @@ defineProps({
 </script>
 
 <template>
-  <RouterLink
-    :to="`/project/${project.id}`"
-    class="group block rounded-2xl overflow-hidden border border-[#E5E7EB] dark:border-[#111827] bg-white dark:bg-[#020617] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-  >
-    <!-- MAIN IMAGE (CONSISTENT HEIGHT) -->
+  <article class="group relative">
     <div
-      class="relative bg-[#020617] dark:bg-[#020617] aspect-video flex items-center justify-center before:absolute before:inset-0 before:pointer-events-none before:bg-[radial-gradient(ellipse_at_top,rgba(0,201,255,0.14),transparent_60%)]"
+      class="relative overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#D4AF73]/40 hover:shadow-2xl dark:border-[#111827] dark:bg-[#020617] dark:hover:border-[#D4AF73]/40"
     >
-      <img
-        :src="`/images/${project.image}`"
-        :alt="project.title"
-        :class="[
-          // Base: fill the fixed image area, keep full logo visible
-          'h-full w-full object-contain p-8 transition-transform duration-500 group-hover:scale-105',
+      <RouterLink
+        :to="`/project/${project.id}`"
+        class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#0B1020]"
+        :aria-label="`Voir l’étude de cas du projet ${project.title}`"
+      >
+        <!-- IMAGE -->
+        <div
+          :class="[
+            'relative flex items-center justify-center overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_top,rgba(0,201,255,0.14),transparent_60%)]',
 
-          // ✅ Boost ONLY for the paw logo (project-2) while keeping it fully visible
-          project.id === 'project-2' ? 'p-6 scale-[1.25] group-hover:scale-[1.35]' : '',
-        ]"
-        @error="$event.target.style.display = 'none'"
-      />
+            project.id === 'project-1'
+              ? 'h-60 bg-white dark:bg-white'
+              : 'aspect-video bg-[#020617]',
+          ]"
+        >
+          <img
+            :src="`/images/${project.image}`"
+            :alt="project.title"
+            :class="[
+              'h-full w-full transition-transform duration-500 ease-out',
 
-      <!-- ✅ "Live site" badge if a URL exists (clickable, opens in new tab) -->
+              // STRUB : image entière, plus grande, sans recadrage
+              project.id === 'project-1'
+                ? 'object-contain p-0 motion-safe:group-hover:scale-[1.08]'
+                : // Autres projets : zoom très léger et propre
+                  'object-contain p-6 motion-safe:group-hover:scale-[1.05]',
+            ]"
+            loading="lazy"
+            decoding="async"
+            @error="$event.target.style.display = 'none'"
+          />
+
+          <!-- Overlay subtil -->
+          <div
+            class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          ></div>
+        </div>
+
+        <!-- CONTENU -->
+        <div class="p-6">
+          <h3
+            class="mb-2 text-xl font-semibold !text-[#1D2939] transition-colors duration-300 group-hover:!text-[#D4AF73] dark:!text-white"
+          >
+            {{ project.title }}
+          </h3>
+
+          <p class="mb-4 text-sm leading-relaxed !text-[#667085] dark:!text-[#E5E7EB]">
+            {{ project.description }}
+          </p>
+
+          <div v-if="project.tech?.length" class="mt-2 flex flex-wrap gap-2">
+            <TechBadge v-for="tech in project.tech" :key="tech" :label="tech" />
+          </div>
+        </div>
+      </RouterLink>
+
+      <!-- Badge live site : séparé du RouterLink pour éviter un lien dans un lien -->
       <a
         v-if="project.url"
         :href="project.url"
         target="_blank"
         rel="noopener noreferrer"
+        class="absolute right-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[11px] font-medium tracking-wide !text-white backdrop-blur transition-colors hover:bg-black/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+        aria-label="Ouvrir le site en ligne dans un nouvel onglet"
+        title="Ouvrir le site"
         @click.stop
-        class="absolute top-4 right-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[11px] font-medium tracking-wide text-white backdrop-blur hover:bg-black/45 transition-colors focus:outline-none focus:ring-2 focus:ring-white/30"
-        aria-label="Open live site in a new tab"
-        title="Open live site"
       >
         <span class="inline-block h-2 w-2 rounded-full bg-[#00C9FF]"></span>
         Live site
       </a>
 
-      <!-- ✅ "Case study" badge if no URL and status = case -->
+      <!-- Badge case study -->
       <span
         v-else-if="project.status === 'case'"
-        class="absolute top-4 right-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[11px] font-medium tracking-wide text-white backdrop-blur"
+        class="absolute right-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[11px] font-medium tracking-wide !text-white backdrop-blur"
       >
         <span class="inline-block h-2 w-2 rounded-full bg-[#D4AF73]"></span>
         Case study
       </span>
-
-      <!-- Subtle hover overlay -->
-      <div
-        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      ></div>
     </div>
-
-    <!-- CONTENT -->
-    <div class="p-6">
-      <!-- TITLE -->
-      <h3
-        class="text-xl font-semibold text-[#1D2939]! dark:text-white! mb-2 group-hover:text-[#D4AF73] transition-colors"
-      >
-        {{ project.title }}
-      </h3>
-
-      <!-- DESCRIPTION -->
-      <p class="text-sm text-[#667085] dark:text-[#E5E7EB] mb-4 leading-relaxed">
-        {{ project.description }}
-      </p>
-
-      <!-- TECHNOLOGIES -->
-      <div v-if="project.tech?.length" class="flex flex-wrap gap-2 mt-2">
-        <TechBadge v-for="t in project.tech" :key="t" :label="t" />
-      </div>
-    </div>
-  </RouterLink>
+  </article>
 </template>
