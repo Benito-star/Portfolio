@@ -23,7 +23,7 @@ const showFooterCta = computed(() => route.path !== '/contact')
       <!-- CTA footer : affiché partout sauf sur /contact -->
       <section
         v-if="showFooterCta"
-        class="mx-auto max-w-3xl text-center"
+        class="footer-border-beam relative mx-auto max-w-3xl overflow-hidden rounded-3xl border border-[#D4AF73]/15 px-6 py-10 text-center dark:border-[#D4AF73]/20 md:px-10"
         aria-labelledby="footer-title"
       >
         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
@@ -170,3 +170,56 @@ const showFooterCta = computed(() => route.path !== '/contact')
     </div>
   </footer>
 </template>
+
+<style scoped>
+.footer-border-beam::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 1.5rem;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 260deg,
+    rgba(212, 175, 115, 0.75) 285deg,
+    rgba(43, 168, 200, 0.45) 305deg,
+    transparent 330deg,
+    transparent 360deg
+  );
+  animation: footerBorderBeam 10s linear infinite;
+  pointer-events: none;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.footer-border-beam::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 1.45rem;
+  background: radial-gradient(circle at top, rgba(212, 175, 115, 0.06), transparent 45%);
+  pointer-events: none;
+}
+
+.footer-border-beam > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes footerBorderBeam {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-border-beam::before {
+    animation: none;
+  }
+}
+</style>

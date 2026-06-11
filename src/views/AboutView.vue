@@ -4,6 +4,7 @@
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import AppLayout from '../components/AppLayout.vue'
+import OrbitingSkills from '@/components/OrbitingSkills.vue'
 
 const skillGroups = [
   {
@@ -110,7 +111,6 @@ onMounted(() => {
       <!-- HERO ABOUT -->
       <section class="mx-auto max-w-6xl">
         <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-          <!-- Texte principal -->
           <div>
             <p
               class="mb-4 inline-flex rounded-full border border-[#D4AF73]/40 bg-[#D4AF73]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]"
@@ -150,18 +150,36 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- Carte profil -->
           <aside
+            v-reveal
             class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
             aria-label="Résumé du profil"
           >
-            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
               Profil
             </p>
 
-            <h2 class="text-xl font-semibold !text-[#1D2939] dark:!text-white">Benito Studio</h2>
+            <div class="flex items-center gap-4">
+              <img
+                src="/images/photo-profil.png"
+                alt="Portrait professionnel de Benoît Durieux"
+                class="h-16 w-16 shrink-0 rounded-full border border-[#D4AF73]/40 object-cover shadow-sm"
+                loading="lazy"
+                decoding="async"
+              />
 
-            <p class="mt-3 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+              <div>
+                <h2 class="text-xl font-semibold !text-[#1D2939] dark:!text-white">
+                  Benito Studio
+                </h2>
+
+                <p class="mt-1 text-sm font-medium !text-[#667085] dark:!text-slate-300">
+                  Webdesigner UI/UX junior
+                </p>
+              </div>
+            </div>
+
+            <p class="mt-5 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
               Portfolio personnel créé pour présenter mes projets, ma méthode et ma capacité à
               relier design, intégration, WordPress, SEO on-page et responsive design.
             </p>
@@ -193,9 +211,30 @@ onMounted(() => {
         </div>
       </section>
 
+      <!-- STACK & OUTILS -->
+      <section class="mx-auto mt-16 grid max-w-6xl gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center">
+        <div>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+            Stack & outils
+          </p>
+
+          <h2 class="text-3xl font-semibold !text-[#1D2939] dark:!text-white">
+            Une double compétence design + intégration.
+          </h2>
+
+          <p class="mt-4 max-w-xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
+            Je combine UI/UX, intégration front-end, WordPress, Elementor, SEO on-page et
+            accessibilité de base pour concevoir des interfaces claires, responsive et maintenables.
+          </p>
+        </div>
+
+        <OrbitingSkills />
+      </section>
+
       <!-- POSITIONNEMENT -->
       <section class="mx-auto mt-16 max-w-6xl">
         <div
+          v-reveal
           class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
         >
           <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
@@ -244,6 +283,7 @@ onMounted(() => {
           <article
             v-for="group in skillGroups"
             :key="group.title"
+            v-reveal
             class="rounded-2xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
           >
             <h3 class="mb-4 text-base font-semibold !text-[#1D2939] dark:!text-white">
@@ -267,6 +307,7 @@ onMounted(() => {
       <section class="mx-auto mt-16 max-w-6xl">
         <div class="grid gap-8 lg:grid-cols-2">
           <div
+            v-reveal
             class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
           >
             <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
@@ -291,6 +332,7 @@ onMounted(() => {
           </div>
 
           <div
+            v-reveal
             class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
           >
             <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
@@ -349,6 +391,7 @@ onMounted(() => {
           <article
             v-for="(step, index) in methodSteps"
             :key="step.title"
+            v-reveal
             class="rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
           >
             <span
@@ -382,6 +425,7 @@ onMounted(() => {
         </div>
 
         <div
+          v-reveal
           class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
         >
           <ol class="space-y-6">
@@ -411,23 +455,24 @@ onMounted(() => {
       <!-- CTA FINAL -->
       <section class="mx-auto mt-16 max-w-6xl">
         <div
+          v-reveal
           class="rounded-3xl border border-[#E5E7EB] bg-white p-8 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-10"
         >
           <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
             <div>
               <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
-                Suite logique
+                PROJETS
               </p>
 
               <h2 class="text-2xl font-semibold !text-[#1D2939] dark:!text-white">
-                Voir comment ce profil se traduit en projets concrets.
+                Découvrez mes projets webdesign
               </h2>
 
               <p
                 class="mt-3 max-w-2xl text-sm leading-relaxed !text-[#667085] dark:!text-slate-300"
               >
-                Le plus important reste la preuve par les projets : structure, décisions UI/UX,
-                intégration, responsive design et apprentissages.
+                Une sélection de projets pour voir mon approche en UI/UX, WordPress, intégration
+                responsive et structuration de contenus.
               </p>
             </div>
 

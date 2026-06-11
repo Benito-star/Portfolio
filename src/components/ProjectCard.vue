@@ -11,9 +11,9 @@ defineProps({
 </script>
 
 <template>
-  <article class="group relative">
+  <article v-reveal class="group relative">
     <div
-      class="relative overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#D4AF73]/40 hover:shadow-2xl dark:border-[#111827] dark:bg-[#020617] dark:hover:border-[#D4AF73]/40"
+      class="relative overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#D4AF73]/40 hover:shadow-[0_0_0_1px_rgba(212,175,115,0.18),0_18px_45px_rgba(2,6,23,0.18)] dark:border-[#111827] dark:bg-[#020617] dark:hover:border-[#D4AF73]/45 dark:hover:shadow-[0_0_0_1px_rgba(212,175,115,0.16),0_0_22px_rgba(212,175,115,0.08)]"
     >
       <RouterLink
         :to="`/project/${project.id}`"
@@ -36,18 +36,15 @@ defineProps({
             :class="[
               'h-full w-full transition-transform duration-500 ease-out',
 
-              // STRUB : image entière, plus grande, sans recadrage
               project.id === 'project-1'
                 ? 'object-contain p-0 motion-safe:group-hover:scale-[1.08]'
-                : // Autres projets : zoom très léger et propre
-                  'object-contain p-6 motion-safe:group-hover:scale-[1.05]',
+                : 'object-contain p-6 motion-safe:group-hover:scale-[1.05]',
             ]"
             loading="lazy"
             decoding="async"
             @error="$event.target.style.display = 'none'"
           />
 
-          <!-- Overlay subtil -->
           <div
             class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           ></div>
@@ -71,7 +68,6 @@ defineProps({
         </div>
       </RouterLink>
 
-      <!-- Badge live site : séparé du RouterLink pour éviter un lien dans un lien -->
       <a
         v-if="project.url"
         :href="project.url"
@@ -86,7 +82,6 @@ defineProps({
         Live site
       </a>
 
-      <!-- Badge case study -->
       <span
         v-else-if="project.status === 'case'"
         class="absolute right-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[11px] font-medium tracking-wide !text-white backdrop-blur"

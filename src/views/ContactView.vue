@@ -5,15 +5,38 @@ import { ref, watch, nextTick, onMounted, computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import AppLayout from '../components/AppLayout.vue'
 
-// Remplace par ton endpoint Formspree réel.
-// Exemple : https://formspree.io/f/abcdwxyz
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/REPLACE_ME'
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mwvjlevk'
 
-// Mon Email et mon lien Linkedln
 const directEmail = 'benoit.durieux@hotmail.be'
 const linkedinUrl = 'https://www.linkedin.com/in/beno%C3%AEt-durieux-15424140b/'
 
 const route = useRoute()
+
+const linkedinBadgeScriptId = 'linkedin-badge-script'
+
+const initLinkedInBadge = async () => {
+  await nextTick()
+  window?.LI?.ProfileBadge?.init?.()
+}
+
+const loadLinkedInBadgeScript = () => {
+  const existingScript = document.getElementById(linkedinBadgeScriptId)
+
+  if (existingScript) {
+    initLinkedInBadge()
+    return
+  }
+
+  const script = document.createElement('script')
+  script.id = linkedinBadgeScriptId
+  script.src = 'https://platform.linkedin.com/badges/js/profile.js'
+  script.async = true
+  script.defer = true
+  script.type = 'text/javascript'
+  script.onload = initLinkedInBadge
+
+  document.body.appendChild(script)
+}
 
 onMounted(() => {
   document.title = 'Contact — Benito Studio | Webdesigner UI/UX junior'
@@ -30,24 +53,23 @@ onMounted(() => {
   }
 
   metaDescription.setAttribute('content', description)
+
+  loadLinkedInBadgeScript()
 })
 
-// Refs DOM pour scroll + focus
 const formCardRef = ref(null)
 const nameInputRef = ref(null)
 const focusHandled = ref(false)
 
-// Champs du formulaire
 const fullName = ref('')
 const email = ref('')
 const contactReason = ref('')
 const message = ref('')
-const website = ref('') // honeypot anti-spam invisible
+const website = ref('')
 
-// État d’envoi
-const status = ref('idle') // 'idle' | 'loading' | 'success' | 'error'
+const status = ref('idle')
 const alertVisible = ref(false)
-const alertType = ref('success') // 'success' | 'error'
+const alertType = ref('success')
 const alertText = ref('')
 
 const isSending = computed(() => status.value === 'loading')
@@ -64,7 +86,6 @@ const showAlert = (type, text) => {
   alertVisible.value = true
 }
 
-// Quand on arrive sur /contact?focus=1 => scroll + focus
 watch(
   () => route.query.focus,
   async (value) => {
@@ -89,18 +110,13 @@ const isValidEmail = (value) => {
 }
 
 const validateForm = () => {
-  if (website.value.trim()) {
-    // Honeypot rempli = probable bot. On bloque discrètement.
-    return 'Votre message n’a pas pu être envoyé.'
-  }
+  if (website.value.trim()) return 'Votre message n’a pas pu être envoyé.'
 
   if (!fullName.value.trim() || !email.value.trim() || !message.value.trim()) {
     return 'Veuillez remplir votre nom, votre e-mail et votre message.'
   }
 
-  if (!isValidEmail(email.value.trim())) {
-    return 'Veuillez entrer une adresse e-mail valide.'
-  }
+  if (!isValidEmail(email.value.trim())) return 'Veuillez entrer une adresse e-mail valide.'
 
   if (message.value.trim().length < 15) {
     return 'Ajoutez quelques détails à votre message pour que je puisse vous répondre correctement.'
@@ -137,9 +153,7 @@ const sendMessage = async () => {
 
   try {
     json = await response.json()
-  } catch {
-    // Réponse vide ou non JSON
-  }
+  } catch {}
 
   if (!response.ok) {
     const errorMessage =
@@ -241,7 +255,7 @@ const onSubmit = async () => {
             </h2>
 
             <p class="mt-2 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
-              Belgique, Luxembourg, Suisse francophone, Espagne et opportunités remote francophones.
+              Belgique, Luxembourg, Espagne.
             </p>
 
             <RouterLink
@@ -254,11 +268,12 @@ const onSubmit = async () => {
         </div>
 
         <!-- CONTENU PRINCIPAL -->
-        <div class="mt-12 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
+        <div class="mt-12 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-stretch">
           <!-- FORMULAIRE -->
           <section
+            v-reveal
             ref="formCardRef"
-            class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
+            class="shine-border-contact relative overflow-hidden rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] md:p-8"
             aria-labelledby="contact-form-title"
           >
             <div class="mb-6">
@@ -275,7 +290,6 @@ const onSubmit = async () => {
               </p>
             </div>
 
-            <!-- ALERTE -->
             <div
               v-if="alertVisible"
               class="mb-6 flex items-start justify-between gap-4 rounded-2xl border px-4 py-3"
@@ -302,7 +316,6 @@ const onSubmit = async () => {
             </div>
 
             <form class="space-y-6" @submit.prevent="onSubmit">
-              <!-- Honeypot anti-spam -->
               <div class="hidden" aria-hidden="true">
                 <label for="website">Site web</label>
                 <input
@@ -316,7 +329,6 @@ const onSubmit = async () => {
               </div>
 
               <div class="grid gap-5 md:grid-cols-2">
-                <!-- NOM -->
                 <div>
                   <label
                     for="fullName"
@@ -338,7 +350,6 @@ const onSubmit = async () => {
                   />
                 </div>
 
-                <!-- EMAIL -->
                 <div>
                   <label
                     for="email"
@@ -360,7 +371,6 @@ const onSubmit = async () => {
                 </div>
               </div>
 
-              <!-- MOTIF -->
               <div>
                 <label
                   for="contactReason"
@@ -388,7 +398,6 @@ const onSubmit = async () => {
                 </select>
               </div>
 
-              <!-- MESSAGE -->
               <div>
                 <label
                   for="message"
@@ -408,7 +417,6 @@ const onSubmit = async () => {
                 ></textarea>
               </div>
 
-              <!-- CTA -->
               <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <button
                   type="submit"
@@ -427,9 +435,9 @@ const onSubmit = async () => {
           </section>
 
           <!-- INFOS DIRECTES -->
-          <aside class="space-y-4">
-            <!-- Email direct -->
+          <aside class="space-y-4 lg:flex lg:h-full lg:flex-col">
             <section
+              v-reveal
               class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
               aria-labelledby="direct-contact-title"
             >
@@ -448,34 +456,13 @@ const onSubmit = async () => {
                 :href="`mailto:${directEmail}`"
                 class="mt-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF73]/50 px-4 py-2 text-sm font-semibold !text-[#1D2939] transition-colors hover:bg-[#D4AF73] hover:!text-[#0B1020] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF73] dark:!text-white"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 6h16v12H4V6z"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M4 7l8 6 8-6"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
                 {{ directEmail }}
               </a>
             </section>
 
-            <!-- LinkedIn -->
             <section
-              class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
+              v-reveal
+              class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] lg:flex lg:flex-1 lg:flex-col"
               aria-labelledby="linkedin-title"
             >
               <h2
@@ -490,58 +477,167 @@ const onSubmit = async () => {
                 LinkedIn.
               </p>
 
+              <div class="mt-5 overflow-hidden rounded-2xl">
+                <div class="block dark:hidden">
+                  <div
+                    class="badge-base LI-profile-badge"
+                    data-locale="fr_FR"
+                    data-size="medium"
+                    data-theme="light"
+                    data-type="VERTICAL"
+                    data-vanity="benoît-durieux-15424140b"
+                    data-version="v1"
+                  >
+                    <a
+                      class="sr-only"
+                      href="https://be.linkedin.com/in/beno%C3%AEt-durieux-15424140b?trk=profile-badge"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Benoît Durieux
+                    </a>
+                  </div>
+                </div>
+
+                <div class="hidden dark:block">
+                  <div
+                    class="badge-base LI-profile-badge"
+                    data-locale="fr_FR"
+                    data-size="medium"
+                    data-theme="dark"
+                    data-type="VERTICAL"
+                    data-vanity="benoît-durieux-15424140b"
+                    data-version="v1"
+                  >
+                    <a
+                      class="sr-only"
+                      href="https://be.linkedin.com/in/beno%C3%AEt-durieux-15424140b?trk=profile-badge"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Benoît Durieux
+                    </a>
+                  </div>
+                </div>
+              </div>
+
               <a
                 :href="linkedinUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="mt-4 inline-flex items-center gap-2 text-sm font-semibold !text-[#1D2939] underline underline-offset-4 transition-colors hover:!text-[#D4AF73] dark:!text-[#D4AF73] dark:hover:!text-[#EACA8A]"
+                class="mt-4 inline-flex items-center gap-2 text-sm font-semibold !text-[#D4AF73] underline underline-offset-4 transition-colors hover:!text-[#EACA8A] lg:mt-auto"
               >
-                Voir mon LinkedIn →
+                Ouvrir le profil LinkedIn →
               </a>
             </section>
-
-            <!-- À préparer -->
-            <section
-              class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
-              aria-labelledby="prepare-title"
-            >
-              <h2 id="prepare-title" class="text-lg font-semibold !text-[#1D2939] dark:!text-white">
-                Informations utiles à envoyer
-              </h2>
-
-              <ul class="mt-4 space-y-3 text-sm !text-[#667085] dark:!text-slate-300">
-                <li class="flex gap-2">
-                  <span
-                    class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]"
-                    aria-hidden="true"
-                  ></span>
-                  <span
-                    >Type de besoin : recrutement, site web, WordPress, intégration ou UX/UI.</span
-                  >
-                </li>
-
-                <li class="flex gap-2">
-                  <span
-                    class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]"
-                    aria-hidden="true"
-                  ></span>
-                  <span
-                    >Contexte : entreprise, agence, projet personnel ou mission ponctuelle.</span
-                  >
-                </li>
-
-                <li class="flex gap-2">
-                  <span
-                    class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]"
-                    aria-hidden="true"
-                  ></span>
-                  <span>Délai, objectifs principaux et lien éventuel vers l’existant.</span>
-                </li>
-              </ul>
-            </section>
           </aside>
+
+          <section
+            v-reveal
+            class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827] lg:col-start-1"
+            aria-labelledby="prepare-title"
+          >
+            <h2 id="prepare-title" class="text-lg font-semibold !text-[#1D2939] dark:!text-white">
+              Informations utiles à envoyer
+            </h2>
+
+            <ul class="mt-4 space-y-3 text-sm !text-[#667085] dark:!text-slate-300">
+              <li class="flex gap-2">
+                <span class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]" aria-hidden="true"></span>
+                <span
+                  >Type de besoin : recrutement, site web, WordPress, intégration ou UX/UI.</span
+                >
+              </li>
+
+              <li class="flex gap-2">
+                <span class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]" aria-hidden="true"></span>
+                <span>Contexte : entreprise, agence, projet personnel ou mission ponctuelle.</span>
+              </li>
+
+              <li class="flex gap-2">
+                <span class="mt-2 h-1.5 w-1.5 rounded-full bg-[#D4AF73]" aria-hidden="true"></span>
+                <span>Délai, objectifs principaux et lien éventuel vers l’existant.</span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- CTA PROJETS -->
+          <section
+            v-reveal
+            class="mt-8 rounded-3xl border border-[#D4AF73]/20 bg-gradient-to-br from-[#1D2939] to-[#0B1020] p-8 text-center shadow-lg lg:col-span-2"
+          >
+            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
+              Portfolio
+            </p>
+
+            <h2 class="text-2xl font-semibold !text-white md:text-3xl">
+              Avant de me contacter, découvrez quelques réalisations.
+            </h2>
+
+            <p class="mx-auto mt-4 max-w-2xl text-sm leading-relaxed !text-slate-300">
+              Explorez mes projets UI/UX, WordPress et intégration web pour mieux comprendre mon
+              approche, ma méthode et mes compétences.
+            </p>
+
+            <RouterLink
+              to="/projects"
+              class="mt-6 inline-flex items-center justify-center rounded-full bg-[#D4AF73] px-6 py-3 text-sm font-semibold !text-[#0B1020] transition-colors hover:bg-[#EACA8A]"
+            >
+              Voir mes projets →
+            </RouterLink>
+          </section>
         </div>
       </section>
     </main>
   </AppLayout>
 </template>
+
+<style scoped>
+.shine-border-contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 1.5rem;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(212, 175, 115, 0.15) 20%,
+    rgba(43, 168, 200, 0.28) 45%,
+    rgba(212, 175, 115, 0.22) 65%,
+    transparent 100%
+  );
+  background-size: 240% 240%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+  animation: contactShineBorder 8s linear infinite;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.shine-border-contact:hover::before,
+.shine-border-contact:focus-within::before {
+  opacity: 1;
+}
+
+@keyframes contactShineBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 240% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shine-border-contact::before {
+    animation: none;
+  }
+}
+</style>

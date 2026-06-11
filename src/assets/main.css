@@ -3,8 +3,21 @@
 /* Enable class-based dark mode (so .dark on <html> works) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+html,
+body,
+#app {
+  min-height: 100%;
+  background: #fafbfc;
+}
+
+html.dark,
+html.dark body,
+html.dark #app {
+  background: #0b1020;
+}
+
 body {
-  @apply bg-[#F3F4F6] text-[#5A5A5A];
+  @apply text-[#475467];
   font-family:
     'Manrope',
     system-ui,
@@ -36,4 +49,26 @@ a {
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
+}
+
+/* Apparition progressive au scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

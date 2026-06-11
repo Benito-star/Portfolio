@@ -3,7 +3,7 @@
 
 <template>
   <div
-    class="min-h-screen flex flex-col bg-white text-[#1D2939] dark:bg-[#0B1020] dark:text-[#E2E4E8]"
+    class="min-h-screen flex flex-col bg-[#FAFBFC] text-[#1D2939] dark:bg-[#0B1020] dark:text-[#E2E4E8]"
   >
     <!-- Header global -->
     <HeaderP :dark="isDark" @toggle-dark="toggleDark" />
