@@ -87,17 +87,13 @@ onMounted(() => {
             class="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm dark:border-[#334155] dark:bg-[#101827]"
             aria-label="Lecture recruteur des projets"
           >
-            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.18em] !text-[#D4AF73]">
-              Lecture recruteur
-            </p>
-
             <h2 class="text-xl font-semibold !text-[#1D2939] dark:!text-white">
               Ce que ces projets démontrent
             </h2>
 
             <p class="mt-3 text-sm leading-relaxed !text-[#667085] dark:!text-slate-300">
-              Une capacité à structurer une interface, clarifier une offre, intégrer des pages
-              responsive et mettre en œuvre des bonnes pratiques WordPress, SEO on-page et
+              Une capacité à concevoir des interfaces claires, structurer l’information, intégrer
+              des pages responsive et appliquer les bonnes pratiques WordPress, SEO on-page et
               accessibilité.
             </p>
           </aside>
